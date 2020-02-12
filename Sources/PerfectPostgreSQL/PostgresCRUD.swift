@@ -181,9 +181,26 @@ class PostgresCRUDRowReader<K : CodingKey>: KeyedDecodingContainerProtocol {
 			guard let data = data0.data(using: .utf8) else {
 				throw CRUDDecoderError("Invalid data for type: \(type) for key: \(key.stringValue)")
 			}
-			if container {
-				return try JSONDecoder().decode(type, from: data)
-			}
+            if container {
+                if let decoded =  try? JSONDecoder().decode(type, from: data) {
+                    return decoded
+                } else {
+                    var workingString = data0.dropLast()
+                    workingString = workingString.dropFirst()
+                    var spacedWord = false
+                    
+                    var array = [String]()
+                    var buildingWord = ""
+                    for c in workingString {
+                        #warning("Need to fix for escaping characters")
+                        if c == "\"" { spacedWord.toggle(); continue }
+                        if c == "," && !spacedWord { array.append(buildingWord); buildingWord = ""; continue }
+                        buildingWord.append(c)
+                    }
+                    array.append(buildingWord)
+                    return array as! T
+                }
+            }
 			guard let obj = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? T else {
 				throw CRUDDecoderError("Invalid data for type: \(type) for key: \(key.stringValue)")
 			}
