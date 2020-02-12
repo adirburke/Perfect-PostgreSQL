@@ -185,6 +185,7 @@ class PostgresCRUDRowReader<K : CodingKey>: KeyedDecodingContainerProtocol {
                 if let decoded =  try? JSONDecoder().decode(type, from: data) {
                     return decoded
                 } else {
+                    // Removes the leading and trailing { }
                     var workingString = data0.dropLast()
                     workingString = workingString.dropFirst()
                     var spacedWord = false
