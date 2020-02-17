@@ -60,7 +60,7 @@ private func _insert<OverAllForm: Codable, FromTableType: TableProtocol>(fromTab
 	VALUES (\(bindIdentifiers.joined(separator: ", ")))
 	RETURNING *
 	"""
-	CRUDLogging.log(.query, sqlStr)
+	CRUDLogging.log(.query, sqlStr, delegate.bindings)
 	let exeDelegate = PostgresExeDelegate(connection: databaseConfiguration.connection, sql: sqlStr)
 	try exeDelegate.bind(delegate.bindings)
 	guard try exeDelegate.hasNext() else {
@@ -144,7 +144,7 @@ private func _insert<OverAllForm: Codable, FromTableType: TableProtocol, R: Deco
 		RETURNING \(nameQ).\(try delegate.quote(identifier: returningName))
 		"""
 	}
-	CRUDLogging.log(.query, sqlStr)
+	CRUDLogging.log(.query, sqlStr, delegate.bindings)
 	let exeDelegate = PostgresExeDelegate(connection: databaseConfiguration.connection, sql: sqlStr)
 	try exeDelegate.bind(delegate.bindings)
 	guard try exeDelegate.hasNext(), let next: KeyedDecodingContainer<ColumnKey> = try exeDelegate.next() else {
