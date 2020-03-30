@@ -382,6 +382,9 @@ class PostgresGenDelegate: SQLGenDelegate {
 		if !column.properties.contains(.primaryKey) && !column.optional {
 			addendum += " NOT NULL"
 		}
+        if type is Int.Type {
+            addendum += " DEFAULT 0"
+        }
 		for prop in column.properties {
 			switch prop {
 			case .primaryKey:
