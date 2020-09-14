@@ -45,6 +45,7 @@ let package = Package(
 	],
 	dependencies: [
 		.package(url: "https://github.com/adirburke/Perfect-CRUD.git", from: "2.0.0-alpha4"),
+		
 		.package(url: "https://github.com/PerfectlySoft/Perfect-libpq-linux.git", from: "2.0.0"),
 		],
 	targets: [
