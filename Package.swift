@@ -19,8 +19,10 @@
 
 import PackageDescription
 
+let package : Package
+
 #if os(macOS)
-let package = Package(
+package = Package(
 	name: "PerfectPostgreSQL",
 	platforms: [
 		.macOS(.v10_15)
@@ -38,7 +40,7 @@ let package = Package(
 	]
 )
 #else
-let package = Package(
+package = Package(
 	name: "PerfectPostgreSQL",
 	products: [
 		.library(name: "PerfectPostgreSQL", targets: ["PerfectPostgreSQL"])
