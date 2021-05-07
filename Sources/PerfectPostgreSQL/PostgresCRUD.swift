@@ -454,6 +454,7 @@ class PostgresExeDelegate: SQLExeDelegate {
 			let r = try connection.exec(statement: sql,
 										params: nextBindings.map {
 											try bindOne(expr: $0.1) })
+            
 			results = r
 			guard r.isValid() else {
 				switch connection.status() {
